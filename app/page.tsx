@@ -9,24 +9,38 @@ export default async function Home() {
   // State 1: Logged out
   if (!user) {
     return (
-      <main className="flex-1 flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100">
-        <div className="text-center max-w-md">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Bem-vindo</h1>
-          <p className="text-lg text-slate-600 mb-8">
-            Cadastre-se para criar seu perfil e compartilhar seus links
-          </p>
-          <div className="flex gap-4 justify-center">
+      <main className="min-h-screen">
+        <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto">
+          <span className="text-xl font-bold">Nexus</span>
+          <div className="flex items-center gap-3">
             <SignInButton>
-              <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <button className="text-gray hover:text-black font-medium px-4 py-2">
                 Entrar
               </button>
             </SignInButton>
             <SignUpButton>
-              <button className="px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition">
+              <button className="bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold px-4 py-2">
                 Criar conta
               </button>
             </SignUpButton>
           </div>
+        </header>
+
+        <div className="flex flex-col items-center justify-center px-6 pt-32 pb-32">
+          <h1 className="text-5xl sm:text-6xl font-bold text-black text-center leading-tight max-w-2xl mb-6">
+            Todos seus links,<br /> em um só lugar
+          </h1>
+          <p className="mt-6 mb-8 text-xl text-gray text-center max-w-wd">
+            Crie sua página pessoal e compartilhe tudo que você quiser com apenas um link.
+          </p>
+          <SignUpButton>
+            <button className="mt-10 bg-yellow text-black hover:bg-yellow/75 rounded-full font-semibold px-4 py-3">
+              Criar minha página de graça
+            </button>
+          </SignUpButton>
+          <p className="mt-4 text-sm text-gray">
+            Demora menos de 1 minuto
+          </p>
         </div>
       </main>
     );
@@ -35,43 +49,54 @@ export default async function Home() {
   // Check if user has a profile in database
   const dbUser = await prisma.user.findUnique({
     where: { clerkId: user.id },
+    include: { links: true }
   });
 
   // State 2: Logged in but no DB profile
   if (!dbUser) {
     return (
-      <main className="flex-1 flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 p-4">
-        <div className="max-w-md w-full">
-          <div className="flex justify-end mb-6">
-            <UserButton />
-          </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Escolha seu nome de usuário</h1>
-          <p className="text-slate-600 mb-6">
-            Crie seu perfil para começar. Escolha um nome de usuário com 3+ caracteres
-            (apenas letras, números e underlines).
+      <main className="min-h-screen">
+        <header className="flex justify-end items-center px-6 py-4 max-w-4xl mx-auto">
+          <UserButton />
+        </header>
+
+        <div className="flex flex-col items-center px-6 pt-16 pb-32">
+          <div className="text-5xl mb-6">👋</div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-black text-center">
+            Bem-vindo à bordo!
+          </h1>
+          <p className="mt-4 text-lg text-gray text-center max-w-md">
+            Vamos configurar sua página pessoal. Escolha seu nome de usuário para começar
           </p>
-          <form action={claimUsername} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Username
+
+          <div className="mt-10 w-full max-w-md bg-white rounded-xl p-6 shadow-sm border border-border">
+            <form action={claimUsername}>
+              <label className="block text-sm font-medium text-gray mb-2">
+                Sua URL personalizada
               </label>
-              <input
-                type="text"
-                name="username"
-                placeholder="your_username"
-                required
-                minLength={3}
-                pattern="[a-zA-Z0-9_]+"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
-            >
-              Criar perfil
-            </button>
-          </form>
+              <div className="flex items-center bg-[#f7f7f7] rounded-xl border border-border overflow-hidden">
+                <span className="text-gray pl-4 pr-1">nexus.bio/</span>
+                <input 
+                  type="text"
+                  name="username"
+                  placeholder="seunome"
+                  required
+                  minLength={3}
+                  pattern="^[a-zA-Z0-9_]+$"
+                  className="flex-1 bg-transparent text-black py-4 pr-4 outline-none placeholder:text-gray"
+                />
+              </div>
+              <p className="mt-2 text-xs text-gray">
+                Apenas letras, números e underlines
+              </p>
+              <button
+                type="submit"
+                className="mt-6 w-full bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold py-3"
+              >
+                Criar minha página
+              </button>
+            </form>
+          </div>
         </div>
       </main>
     );
@@ -79,44 +104,63 @@ export default async function Home() {
 
   // State 3: Has DB profile - Show dashboard
   return (
-    <main className="flex-1">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">
-              Welcome, {dbUser.name || dbUser.username}
-            </h1>
-            <p className="text-slate-600 mt-1">@{dbUser.username}</p>
-          </div>
-          <UserButton />
-        </div>
+    <main className="min-h-screen">
+      <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto">
+        <span className="text-xl font-bold">Nexus</span>
+        <UserButton />
+      </header>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-4">Profile</h2>
-          <div className="space-y-3 text-slate-700">
-            <p>
-              <span className="font-medium">Email:</span> {dbUser.email}
-            </p>
-            <p>
-              <span className="font-medium">Username:</span> @{dbUser.username}
-            </p>
-            {dbUser.name && (
-              <p>
-                <span className="font-medium">Name:</span> {dbUser.name}
-              </p>
-            )}
-            <p>
-              <span className="font-medium">Joined:</span>{" "}
-              {new Date(dbUser.createdAt).toLocaleDateString()}
-            </p>
+      <div className="mx-auto max-w-2xl px-6 py-8">
+        {/* profile card */}
+        <div className="flex flex-col items-center bg-white rounded-xl p-6 shadow-sm border border-border text-center">
+          <div className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center text-2xl font-bold">
+            {(dbUser.name?.[0] || dbUser.username[0]).toUpperCase()}
           </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold text-slate-900 mb-4">Links</h2>
-          <p className="text-slate-600">
-            Sem links ainda. Adicionar links ao perfil em breve!
+          <h1 className="mt-4 text-2xl font-bold text-black">
+            {dbUser.name || dbUser.username}
+          </h1>
+          <p className="mt-1 text-gray">
+            nexus.bio/{dbUser.username}
           </p>
+          <button className="mt-4 border border-border hover:border-yellow text-black rounded-full py-2 px-4">
+            Copiar link
+          </button>
+        </div>
+
+        {/* links card */}
+        <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-black">Meus links</h2>
+            <button className="bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold px-5 py-3">
+              + Adicionar link
+            </button>
+          </div>
+
+          {dbUser.links.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-4xl mb-3">🔗</div>
+              <p className="text-gray">
+                Sem links ainda. Adicione o seu primeiro link!
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {dbUser.links.map((link) => (
+                <div
+                  key={link.id}
+                  className="flex items-center justify-between p-4 bg-[#f7f7f7] rounded-xl border border-border"
+                >
+                  <div className="min-w-0">
+                    <p className="font-semibold text-black truncate">{link.title}</p>
+                    <p className="text-sm text-gray truncate">{link.url}</p>
+                  </div>
+                  <button className="ml-4 text-gray hover:text-black">
+                    ...
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </main>
