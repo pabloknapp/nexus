@@ -1,7 +1,7 @@
 ﻿import { currentUser } from "@clerk/nextjs/server";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
-import { claimUsername } from "./actions";
+import { addLink, claimUsername, deleteLink } from "./actions";
 
 export default async function Home() {
   const user = await currentUser();
@@ -131,10 +131,30 @@ export default async function Home() {
         <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-black">Meus links</h2>
-            <button className="bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold px-5 py-3">
-              + Adicionar link
-            </button>
           </div>
+
+          <form action={addLink} className="mb-6 grid grid-cols-1 sm:grid-cols-5 gap-3">
+            <input
+              type="text"
+              name="title"
+              placeholder="Título"
+              required
+              className="sm:col-span-2 w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-3 outline-none placeholder:text-gray"
+            />
+            <input
+              type="url"
+              name="url"
+              placeholder="https://exemplo.com"
+              required
+              className="sm:col-span-2 w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-3 outline-none placeholder:text-gray"
+            />
+            <button
+              type="submit"
+              className="sm:col-span-1 bg-yellow hover:bg-yellow/75 text-black rounded-xl font-semibold px-5 py-3"
+            >
+              Adicionar
+            </button>
+          </form>
 
           {dbUser.links.length === 0 ? (
             <div className="text-center py-12">
@@ -154,9 +174,12 @@ export default async function Home() {
                     <p className="font-semibold text-black truncate">{link.title}</p>
                     <p className="text-sm text-gray truncate">{link.url}</p>
                   </div>
-                  <button className="ml-4 text-gray hover:text-black">
-                    ...
-                  </button>
+                  <form action={deleteLink} className="ml-4">
+                    <input type="hidden" name="linkId" value={link.id} />
+                    <button type="submit" className="text-gray hover:text-black">
+                      Excluir
+                    </button>
+                  </form>
                 </div>
               ))}
             </div>

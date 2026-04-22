@@ -10,9 +10,12 @@ async function testDatabase() {
 
     // Test 2: Create a test user
     console.log("\n📝 Creating a test user...");
+    const suffix = Date.now();
     const newUser = await prisma.user.create({
       data: {
-        email: "demo@example.com",
+        email: `demo+${suffix}@example.com`,
+        username: `demo_${suffix}`,
+        clerkId: `test_${suffix}`,
         name: "Demo User",
       },
     });
