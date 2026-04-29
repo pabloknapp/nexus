@@ -2,6 +2,10 @@
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { addLink, claimUsername, deleteLink } from "./actions";
+import CopyButton from "./components/copy-button";
+import Image from "next/image";
+import Logo from "@/public/nexus-logo.png"
+import ViewLink from "@/public/view-link-icon.png"
 
 export default async function Home() {
   const user = await currentUser();
@@ -10,16 +14,19 @@ export default async function Home() {
   if (!user) {
     return (
       <main className="min-h-screen">
-        <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto">
-          <span className="text-xl font-bold">Nexus</span>
+        <header className="flex justify-between items-center border border-b-gray/20 px-[30vw] py-4 max-w-full mx-auto">
+          <div className="flex items-center gap-1.25 select-none">
+            <Image src={Logo} alt="Copiado" width={20} height={20} />
+            <span className="text-md font-semibold">Nexus</span>
+          </div>
           <div className="flex items-center gap-3">
             <SignInButton>
-              <button className="text-gray hover:text-black font-medium px-4 py-2">
+              <button className="text-gray hover:text-black hover:cursor-pointer font-medium px-4 py-2">
                 Entrar
               </button>
             </SignInButton>
             <SignUpButton>
-              <button className="bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold px-4 py-2">
+              <button className="bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">
                 Criar conta
               </button>
             </SignUpButton>
@@ -34,12 +41,12 @@ export default async function Home() {
             Crie sua página pessoal e compartilhe tudo que você quiser com apenas um link.
           </p>
           <SignUpButton>
-            <button className="mt-10 bg-yellow text-black hover:bg-yellow/75 rounded-full font-semibold px-4 py-3">
-              Criar minha página de graça
+            <button className="mt-6 bg-yellow text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">
+              Criar minha página
             </button>
           </SignUpButton>
           <p className="mt-4 text-sm text-gray">
-            Demora menos de 1 minuto
+            Leva menos de 1 minuto
           </p>
         </div>
       </main>
@@ -106,7 +113,10 @@ export default async function Home() {
   return (
     <main className="min-h-screen">
       <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto">
-        <span className="text-xl font-bold">Nexus</span>
+        <div className="flex items-center gap-1.25 select-none">
+          <Image src={Logo} alt="Copiado" width={20} height={20} />
+          <span className="text-md font-semibold">Nexus</span>
+        </div>
         <UserButton />
       </header>
 
@@ -119,48 +129,65 @@ export default async function Home() {
           <h1 className="mt-4 text-2xl font-bold text-black">
             {dbUser.name || dbUser.username}
           </h1>
-          <p className="mt-1 text-gray">
-            nexus.bio/{dbUser.username}
-          </p>
-          <button className="mt-4 border border-border hover:border-yellow text-black rounded-full py-2 px-4">
-            Copiar link
-          </button>
+          <div className="flex items-center gap-2">
+            <p className="mt-1 text-gray">
+              nexus.bio/{dbUser.username}
+            </p>
+            <CopyButton url={`https://nexus.bio/${dbUser.username}`} />
+          </div>
+          <div className="mt-6 flex justify-center gap-2">
+            <a 
+              href={`/${dbUser.username}`}
+              target="_blank"
+              className="border border-gray/50 hover:bg-yellow/75 text-black rounded-full font-md px-4 py-2 text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <span>Ver minha página</span>
+                <Image src={ViewLink} alt="Ver minha página" width={12} height={12} />
+              </div>
+            </a>
+          </div>
         </div>
+        
+        <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-black">Adicionar um novo link</h2>
+          </div>
+          <form action={addLink} className="flex flex-col gap-2">
+              <input
+                type="text"
+                name="title"
+                placeholder="Título"
+                required
+                className="w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-2 outline-none placeholder:text-gray"
+              />
+              <input
+                type="url"
+                name="url"
+                placeholder="https://exemplo.com"
+                required
+                className="w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-2 outline-none placeholder:text-gray"
+              />
+              <button
+                type="submit"
+                className="w-[50%] mx-auto mt-4 bg-yellow hover:cursor-pointer hover:bg-yellow/75 text-black rounded-full font-semibold py-2"
+              >
+                Adicionar link
+              </button>
+            </form>
+          </div>
 
         {/* links card */}
         <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-black">Meus links</h2>
+            <h2 className="text-lg font-bold text-black">Meus links ({dbUser.links.length})</h2>
           </div>
-
-          <form action={addLink} className="mb-6 grid grid-cols-1 sm:grid-cols-5 gap-3">
-            <input
-              type="text"
-              name="title"
-              placeholder="Título"
-              required
-              className="sm:col-span-2 w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-3 outline-none placeholder:text-gray"
-            />
-            <input
-              type="url"
-              name="url"
-              placeholder="https://exemplo.com"
-              required
-              className="sm:col-span-2 w-full bg-[#f7f7f7] rounded-xl border border-border px-4 py-3 outline-none placeholder:text-gray"
-            />
-            <button
-              type="submit"
-              className="sm:col-span-1 bg-yellow hover:bg-yellow/75 text-black rounded-xl font-semibold px-5 py-3"
-            >
-              Adicionar
-            </button>
-          </form>
 
           {dbUser.links.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-4xl mb-3">🔗</div>
+              <div className="text-4xl mb-6 select-none">🔗</div>
               <p className="text-gray">
-                Sem links ainda. Adicione o seu primeiro link!
+                Sem links ainda. Adicione o seu primeiro link
               </p>
             </div>
           ) : (
@@ -176,8 +203,8 @@ export default async function Home() {
                   </div>
                   <form action={deleteLink} className="ml-4">
                     <input type="hidden" name="linkId" value={link.id} />
-                    <button type="submit" className="text-gray hover:text-black">
-                      Excluir
+                    <button type="submit" className="text-black hover:text-red-600 hover:cursor-pointer transition-colors">
+                      Deletar
                     </button>
                   </form>
                 </div>
