@@ -14,22 +14,14 @@ export default async function Home() {
   if (!user) {
     return (
       <main className="min-h-screen">
-        <header className="flex justify-between items-center border border-b-gray/20 px-[30vw] py-4 max-w-full mx-auto">
+        <header className="flex justify-between items-center border border-b-gray/15 px-[30vw] py-2.5 max-w-full mx-auto">
           <div className="flex items-center gap-1.25 select-none">
             <Image src={Logo} alt="Copiado" width={20} height={20} />
             <span className="text-md font-semibold">Nexus</span>
           </div>
           <div className="flex items-center gap-3">
-            <SignInButton>
-              <button className="text-gray hover:text-black hover:cursor-pointer font-medium px-4 py-2">
-                Entrar
-              </button>
-            </SignInButton>
-            <SignUpButton>
-              <button className="bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">
-                Criar conta
-              </button>
-            </SignUpButton>
+            <SignInButton className="text-gray hover:text-black hover:cursor-pointer font-medium px-4 py-2">Login</SignInButton>
+            <SignUpButton className="bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">Criar Conta</SignUpButton>
           </div>
         </header>
 
@@ -40,11 +32,7 @@ export default async function Home() {
           <p className="mt-6 mb-8 text-xl text-gray text-center max-w-wd">
             Crie sua página pessoal e compartilhe tudo que você quiser com apenas um link.
           </p>
-          <SignUpButton>
-            <button className="mt-6 bg-yellow text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">
-              Criar minha página
-            </button>
-          </SignUpButton>
+          <SignUpButton className="mt-6 bg-yellow text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">Criar minha página</SignUpButton>
           <p className="mt-4 text-sm text-gray">
             Leva menos de 1 minuto
           </p>
@@ -98,7 +86,7 @@ export default async function Home() {
               </p>
               <button
                 type="submit"
-                className="mt-6 w-full bg-yellow hover:bg-yellow/75 text-black rounded-full font-semibold py-3"
+                className="mt-6 w-full bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold py-3"
               >
                 Criar minha página
               </button>
@@ -112,7 +100,7 @@ export default async function Home() {
   // State 3: Has DB profile - Show dashboard
   return (
     <main className="min-h-screen">
-      <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto">
+      <header className="flex justify-between items-center border border-gray/20 mt-4 rounded-full px-6 py-2.5 max-w-4xl mx-auto">
         <div className="flex items-center gap-1.25 select-none">
           <Image src={Logo} alt="Copiado" width={20} height={20} />
           <span className="text-md font-semibold">Nexus</span>
