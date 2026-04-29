@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { clerkClient } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
 type PageProps = {
@@ -22,6 +23,9 @@ export default async function PublicProfilePage({ params }: PageProps) {
     notFound();
   }
 
+  const client = await clerkClient();
+  const clerkUser = await client.users.getUser(user.clerkId);
+
   const avatarLetter = (user.name?.[0] || user.username[0] || "?").toUpperCase();
 
   return (
@@ -29,9 +33,17 @@ export default async function PublicProfilePage({ params }: PageProps) {
       <div className="mx-auto w-full max-w-md">
         <div className="card">
           <div className="flex flex-col items-center text-center">
-            <div className="w-20 h-20 bg-yellow rounded-full flex items-center justify-center text-3xl font-bold text-black">
-              {avatarLetter}
-            </div>
+            {clerkUser.imageUrl ? (
+              <img
+                src={clerkUser.imageUrl}
+                alt={user.name || user.username}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-20 h-20 bg-yellow rounded-full flex items-center justify-center text-3xl font-bold text-black">
+                {avatarLetter}
+              </div>
+            )}
 
             <h1 className="mt-5 text-2xl font-bold text-black">
               {user.name || user.username}

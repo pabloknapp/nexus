@@ -1,4 +1,4 @@
-﻿import { currentUser } from "@clerk/nextjs/server";
+﻿import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { addLink, claimUsername, deleteLink } from "./actions";
@@ -98,6 +98,9 @@ export default async function Home() {
   }
 
   // State 3: Has DB profile - Show dashboard
+  const client = await clerkClient();
+  const clerkUser = await client.users.getUser(user.id);
+
   return (
     <main className="min-h-screen">
       <header className="flex justify-between items-center border border-gray/20 mt-4 rounded-full px-6 py-2.5 max-w-4xl mx-auto">
@@ -111,9 +114,17 @@ export default async function Home() {
       <div className="mx-auto max-w-2xl px-6 py-8">
         {/* profile card */}
         <div className="flex flex-col items-center card text-center">
-          <div className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center text-2xl font-bold">
-            {(dbUser.name?.[0] || dbUser.username[0]).toUpperCase()}
-          </div>
+          {clerkUser.imageUrl ? (
+            <img
+              src={clerkUser.imageUrl}
+              alt={dbUser.name || dbUser.username}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center text-2xl font-bold">
+              {(dbUser.name?.[0] || dbUser.username[0]).toUpperCase()}
+            </div>
+          )}
           <h1 className="mt-4 text-2xl font-bold text-black">
             {dbUser.name || dbUser.username}
           </h1>
