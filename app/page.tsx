@@ -33,7 +33,7 @@ export default async function Home() {
           </div>
         </header>
 
-        <div className="flex flex-col items-center justify-center px-6 pt-32 pb-32">
+        <div className="flex flex-col items-center justify-center px-6 pt-32 pb-32 glow-container">
           <h1 className="text-5xl sm:text-6xl font-bold text-black text-center leading-tight max-w-2xl mb-6">
             Todos seus links,<br /> em um só lugar
           </h1>
@@ -76,7 +76,7 @@ export default async function Home() {
             Vamos configurar sua página pessoal. Escolha seu nome de usuário para começar
           </p>
 
-          <div className="mt-10 w-full max-w-md bg-white rounded-xl p-6 shadow-sm border border-border">
+          <div className="mt-10 w-full max-w-md card">
             <form action={claimUsername}>
               <label className="block text-sm font-medium text-gray mb-2">
                 Sua URL personalizada
@@ -122,7 +122,7 @@ export default async function Home() {
 
       <div className="mx-auto max-w-2xl px-6 py-8">
         {/* profile card */}
-        <div className="flex flex-col items-center bg-white rounded-xl p-6 shadow-sm border border-border text-center">
+        <div className="flex flex-col items-center card text-center">
           <div className="w-16 h-16 bg-yellow rounded-full flex items-center justify-center text-2xl font-bold">
             {(dbUser.name?.[0] || dbUser.username[0]).toUpperCase()}
           </div>
@@ -149,7 +149,7 @@ export default async function Home() {
           </div>
         </div>
         
-        <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
+        <div className="mt-6 card">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-black">Adicionar um novo link</h2>
           </div>
@@ -178,7 +178,7 @@ export default async function Home() {
           </div>
 
         {/* links card */}
-        <div className="mt-6 bg-white rounded-xl p-6 shadow-sm border border-border">
+        <div className="mt-6 card">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold text-black">Meus links ({dbUser.links.length})</h2>
           </div>

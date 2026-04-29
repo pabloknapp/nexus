@@ -27,35 +27,37 @@ export default async function PublicProfilePage({ params }: PageProps) {
   return (
     <main className="min-h-screen px-6 py-12 bg-gray/10">
       <div className="mx-auto w-full max-w-md">
-        <div className="flex flex-col items-center text-center">
-          <div className="w-20 h-20 bg-yellow rounded-full flex items-center justify-center text-3xl font-bold text-black">
-            {avatarLetter}
+        <div className="card">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-20 h-20 bg-yellow rounded-full flex items-center justify-center text-3xl font-bold text-black">
+              {avatarLetter}
+            </div>
+
+            <h1 className="mt-5 text-2xl font-bold text-black">
+              {user.name || user.username}
+            </h1>
+            <p className="mt-1 text-gray">@{user.username}</p>
           </div>
 
-          <h1 className="mt-5 text-2xl font-bold text-black">
-            {user.name || user.username}
-          </h1>
-          <p className="mt-1 text-gray">@{user.username}</p>
-        </div>
-
-        <div className="mt-8 w-full max-w-md space-y-3">
-          {user.links.length === 0 ? (
-            <div className="text-center py-10 text-gray">
-              Nenhum link publicado ainda.
-            </div>
-          ) : (
-            user.links.map((link) => (
-              <a
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full rounded-full border bg-white border-gray/30 px-6 py-4 font-semibold text-center text-black hover:border-yellow"
-              >
-                <span className="truncate">{link.title}</span>
-              </a>
-            ))
-          )}
+          <div className="mt-8 w-full max-w-md space-y-3">
+            {user.links.length === 0 ? (
+              <div className="text-center py-10 text-gray">
+                Nenhum link publicado ainda.
+              </div>
+            ) : (
+              user.links.map((link) => (
+                <a
+                  key={link.id}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full rounded-full border bg-white border-gray/30 px-6 py-4 font-semibold text-center text-black hover:border-yellow"
+                >
+                  <span className="truncate">{link.title}</span>
+                </a>
+              ))
+            )}
+          </div>
         </div>
 
         <div className="text-center pb-8 mt-12">
