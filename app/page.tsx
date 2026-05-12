@@ -20,8 +20,8 @@ export default async function Home() {
             <span className="text-md font-semibold">Nexus</span>
           </div>
           <div className="flex items-center gap-3">
-            <SignInButton className="text-gray hover:text-black hover:cursor-pointer font-medium px-4 py-2">Login</SignInButton>
-            <SignUpButton className="bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">Criar Conta</SignUpButton>
+            <SignInButton mode="modal" className="text-gray hover:outline-1 hover:text-black hover:cursor-pointer transition-colors hover:bg-yellow/75 rounded-full font-medium px-4 py-2">Entrar</SignInButton>
+            <SignUpButton mode="modal" className="bg-yellow outline-1 hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">Criar Conta</SignUpButton>
           </div>
         </header>
 
@@ -32,7 +32,7 @@ export default async function Home() {
           <p className="mt-6 mb-8 text-xl text-gray text-center max-w-wd">
             Crie sua página pessoal e compartilhe tudo que você quiser com apenas um link.
           </p>
-          <SignUpButton className="mt-6 bg-yellow text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">Criar minha página</SignUpButton>
+          <SignUpButton mode="modal" className="mt-6 bg-yellow outline-1 text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">Criar minha página</SignUpButton>
           <p className="mt-4 text-sm text-gray">
             Leva menos de 1 minuto
           </p>
@@ -61,7 +61,7 @@ export default async function Home() {
             Bem-vindo à bordo!
           </h1>
           <p className="mt-4 text-lg text-gray text-center max-w-md">
-            Vamos configurar sua página pessoal. Escolha seu nome de usuário para começar
+            Vamos configurar sua página pessoal. Escolha seu nome de usuário para começar. Cuidado, não será possível alterar depois.
           </p>
 
           <div className="mt-10 w-full max-w-md card">
@@ -169,7 +169,7 @@ export default async function Home() {
               />
               <button
                 type="submit"
-                className="w-[50%] mx-auto mt-4 bg-yellow hover:cursor-pointer hover:bg-yellow/75 text-black rounded-full font-semibold py-2"
+                className="w-[50%] mx-auto mt-4 bg-yellow outline-1 hover:cursor-pointer hover:bg-yellow/75 text-black rounded-full font-semibold py-2"
               >
                 Adicionar link
               </button>
