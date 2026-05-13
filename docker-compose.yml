@@ -1,0 +1,53 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    command: npm run dev
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - nexus-network
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexususer -d nexusdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+
+networks:
+  nexus-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
