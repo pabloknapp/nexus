@@ -20,8 +20,12 @@ export default async function Home() {
             <span className="text-md font-semibold">Nexus</span>
           </div>
           <div className="flex items-center gap-3">
-            <SignInButton mode="modal" className="text-gray hover:outline-1 hover:text-black hover:cursor-pointer transition-colors hover:bg-yellow/75 rounded-full font-medium px-4 py-2">Entrar</SignInButton>
-            <SignUpButton mode="modal" className="bg-yellow outline-1 hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">Criar Conta</SignUpButton>
+            <SignInButton mode="modal">
+              <button className="text-gray hover:outline-1 hover:text-black hover:cursor-pointer transition-colors hover:bg-yellow/75 rounded-full font-medium px-4 py-2">Entrar</button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="bg-yellow outline-1 hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold px-4 py-2">Criar Conta</button>
+            </SignUpButton>
           </div>
         </header>
 
@@ -32,7 +36,9 @@ export default async function Home() {
           <p className="mt-6 mb-8 text-xl text-gray text-center max-w-wd">
             Crie sua página pessoal e compartilhe tudo que você quiser com apenas um link.
           </p>
-          <SignUpButton mode="modal" className="mt-6 bg-yellow outline-1 text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">Criar minha página</SignUpButton>
+          <SignUpButton mode="modal">
+            <button className="mt-6 bg-yellow outline-1 text-black hover:bg-yellow/75 hover:cursor-pointer rounded-full font-semibold px-4 py-3">Criar minha página</button>
+          </SignUpButton>
           <p className="mt-4 text-sm text-gray">
             Leva menos de 1 minuto
           </p>
