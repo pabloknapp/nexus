@@ -76,7 +76,7 @@ export default async function Home() {
                 Sua URL personalizada
               </label>
               <div className="flex items-center bg-[#f7f7f7] rounded-xl border border-border overflow-hidden">
-                <span className="text-gray pl-4 pr-1">nexus.bio/</span>
+                <span className="text-gray pl-4 pr-1">nexus.frameworksweb.com.br/</span>
                 <input 
                   type="text"
                   name="username"
@@ -150,9 +150,9 @@ export default async function Home() {
           </h1>
           <div className="flex items-center gap-2">
             <p className="mt-1 text-gray">
-              nexus.bio/{dbUser.username}
+              nexus.frameworksweb.com.br/{dbUser.username}
             </p>
-            <CopyButton url={`https://nexus.bio/${dbUser.username}`} />
+            <CopyButton url={`https://nexus.frameworksweb.com.br/${dbUser.username}`} />
           </div>
           <div className="mt-6 flex justify-center gap-2">
             <a 
