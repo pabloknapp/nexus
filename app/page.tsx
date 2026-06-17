@@ -1,4 +1,4 @@
-﻿import { currentUser, clerkClient } from "@clerk/nextjs/server";
+import { currentUser, clerkClient } from "@clerk/nextjs/server";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import prisma from "@/lib/prisma";
 import { addLink, claimUsername, deleteLink } from "./actions";
@@ -90,6 +90,20 @@ export default async function Home() {
               <p className="mt-2 text-xs text-gray">
                 Apenas letras, números e underlines
               </p>
+
+              <div className="mt-6 flex items-start gap-3 text-left">
+                <input 
+                  type="checkbox" 
+                  name="termsAccepted" 
+                  id="terms" 
+                  required 
+                  className="mt-1 w-4 h-4 accent-yellow hover:cursor-pointer"
+                />
+                <label htmlFor="terms" className="text-sm text-gray cursor-pointer">
+                  Li e concordo com os Termos de Uso e a Política de Privacidade. Compreendo que meus dados serão processados conforme a LGPD.
+                </label>
+              </div>
+
               <button
                 type="submit"
                 className="mt-6 w-full bg-yellow hover:bg-yellow/75 hover:cursor-pointer text-black rounded-full font-semibold py-3"

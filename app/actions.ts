@@ -13,6 +13,11 @@ export async function claimUsername(formData: FormData) {
   }
 
   const username = formData.get("username") as string;
+  const termsAccepted = formData.get("termsAccepted") === "on";
+
+  if (!termsAccepted) {
+    throw new Error("Você precisa aceitar os termos de uso e a política de privacidade.");
+  }
 
   if (!username || username.length < 3) {
     throw new Error("Usuário deve ter pelo menos 3 caracteres");
@@ -29,6 +34,8 @@ export async function claimUsername(formData: FormData) {
         email: user.emailAddresses[0]?.emailAddress || "",
         username,
         name: user.fullName || undefined,
+        termsAccepted: true,
+        termsAcceptedAt: new Date(),
       },
     });
   } catch (error: unknown) {
